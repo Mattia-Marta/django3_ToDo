@@ -1,0 +1,20 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+
+    <h1>WELCOME, {{ user.username }}</h1>
+    <h3> This is your to-do list, you have {{ todos.count }} finished tasks</h3>
+    <ul>
+    {% for todo in todos %}
+        <li onclick="location.href='{% url 'viewtodo' todo.id %}';" style="cursor:pointer;">
+            {% if todo.important %} <b> {% endif %}
+            {{ todo.title }}
+            {% if todo.important %} </b> {% endif %}
+
+            {% if todo.memo %} - {{ todo.memo }} {% endif %}
+            - {{ todo.datecompleted|date:'j M Y H:i' }}
+        </li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}
