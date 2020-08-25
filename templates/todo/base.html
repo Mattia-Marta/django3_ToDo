@@ -23,6 +23,17 @@
             background-color: #2ecadb !important;
         }
 
+        .al-right {
+            float: right;
+            text-align: right;
+        }
+
+        #fixedbutton {
+            position: fixed;
+            bottom: 20px;
+            right: 15px;
+        }
+
     </style>
     <title>ToDo-IT</title>
 </head>
@@ -34,6 +45,8 @@
     <a class="navbar-brand" href="{% url 'home' %}">
         {% if user.username == 'NGobbux' %}
             <img src="{% static 'todo/nico.png' %}" width="30" height="30" class="d-inline-block align-top">
+        {% elif user.username == 'TrashVizier'%}
+            <img src="{% static 'todo/vault.png' %}" width="30" height="30" class="d-inline-block align-top">
         {% else %}
             <img src="{% static 'todo/logo.png' %}" width="30" height="30" class="d-inline-block align-top">
         {% endif %}

@@ -15,16 +15,31 @@
         {% if todos %}
             <div class="list-group">
                 {% for todo in todos %}
-                    <a href="{% url 'viewtodo' todo.id %}" class="list-group-item list-group-item-action{% if todo.important %} list-group-item-danger{% endif %}"><b>{{ todo.title }}</b>{% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}</a>
+                    <a href="{% url 'viewtodo' todo.id %}" class="list-group-item list-group-item-action{% if todo.important %} list-group-item-danger{% endif %}">
+                        <b>{{ todo.title }}</b>{% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}<span class="al-right">{{ todo.created|date:'j M Y' }}</span></a>
                 {% endfor %}
             </div>
         {% else %}
             <div class="text-center">
                 <h2>Looks like you don't have any todos! Nice work.</h2>
             <br>
-            <a role="button" class="btn btn-primary" href="{% url 'createtodo' %}">New Todo</a>
             </div>
         {% endif %}
+        <br><br><br>
+            <div class="text-center">
+                <a href="{% url 'createtodo' %}">
+                    {% if request.user_agent.is_mobile  %}
+                        <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-plus-circle" id="fixedbutton" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
+                            <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
+                            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        </svg>
+                    {% else %}
+                        <br>
+                        <button class="btn btn-primary">New Todo</button>
+                    {% endif %}
+                </a>
+            </div>
         </div>
     </div>
 {% endblock %}
