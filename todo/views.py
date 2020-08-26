@@ -98,8 +98,15 @@ def createtodo(request):
             form = TodoForm(request.POST)
             new_todo = form.save(commit=False)
             new_todo.user = request.user
-            new_todo.save()
-            return redirect('currenttodos')
+            today = date.today()
+            arg_expire = request.POST.get('expire')
+            expire = datetime.strptime(arg_expire, '%Y-%m-%d').date()
+            if expire > today:
+                new_todo.save()
+                return redirect('currenttodos')
+            else:
+                return render(request, 'todo/createtodo.html', {'form': TodoForm(), 'error': 'Cannot be already expired'})
+
         except ValueError:
             return render(request, 'todo/createtodo.html', {'form': TodoForm(), 'error': 'Malformed datas'})
 
