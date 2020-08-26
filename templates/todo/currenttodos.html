@@ -15,8 +15,12 @@
         {% if todos %}
             <div class="list-group">
                 {% for todo in todos %}
-                    <a href="{% url 'viewtodo' todo.id %}" class="list-group-item list-group-item-action{% if todo.important %} list-group-item-danger{% endif %}">
-                        <b>{{ todo.title }}</b>{% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}<span class="al-right">{{ todo.created|date:'j M Y' }}</span></a>
+                    <a href="{% url 'viewtodo' todo.id %}" class="list-group-item list-group-item-action
+                        {% if todo.important %} list-group-item-danger{% endif %}">
+                        <b>{{ todo.title }}</b>
+                        {% if todo.memo %} - {{ todo.memo|truncatechars:25 }}{% endif %}
+                        <span class="al-right">{{ todo.created|date:'j M Y' }} {% if todo.expire %} - {{ todo.expire|date:'j M Y' }} {% endif %}</span>
+                    </a>
                 {% endfor %}
             </div>
         {% else %}

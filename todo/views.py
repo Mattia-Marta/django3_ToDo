@@ -1,3 +1,6 @@
+import sys
+from datetime import *
+
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -70,9 +73,17 @@ def viewtodo(request, todo_pk):
         return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form})
     else:
         try:
+            today = date.today()
             form = TodoForm(request.POST, instance=todo)
-            form.save()
-            return redirect('currenttodos')
+            arg_expire = request.POST.get('expire')
+            expire = datetime.strptime(arg_expire, '%Y-%m-%d').date()
+
+            if expire > today:
+                form.save()
+                return redirect('currenttodos')
+            else:
+                return render(request, 'todo/viewtodo.html',
+                              {'todo': todo, 'form': form, 'error': 'Date cannot be earlier than today'})
         except ValueError:
             return render(request, 'todo/viewtodo.html',
                           {'todo': todo, 'form': form, 'error': 'Malformed data'})
@@ -90,7 +101,7 @@ def createtodo(request):
             new_todo.save()
             return redirect('currenttodos')
         except ValueError:
-            return render(request, 'todo/createtodo.html', {'form': TodoForm(), 'error': 'Do not fuck with the master'})
+            return render(request, 'todo/createtodo.html', {'form': TodoForm(), 'error': 'Malformed datas'})
 
 
 @login_required
